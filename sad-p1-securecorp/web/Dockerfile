@@ -1,21 +1,17 @@
-# Parte C · La máquina web.securecorp.local (el servidor web de SecureCorp)
-#
-# ✍️ Completa los ____ (lo explica el enunciado, Parte C).
-#    Pista: el Dockerfile del laboratorio (el de la carpeta de arriba) hace casi lo mismo.
+# Parte C · La máquina web.securecorp.local
 
-# 1 · Imagen de partida: la misma Debian que el resto del laboratorio
-FROM ____
+# 1. Imagen de partida: misma Debian que el laboratorio
+FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 2 · Programas: el cliente de Kerberos (kinit, klist) y el de LDAP (ldapsearch, ldapwhoami)
+# 2. Instalar clientes de Kerberos, LDAP y certificados
 RUN apt-get update && apt-get install -y \
-      ____ ____ ca-certificates \
+      krb5-user ldap-utils ca-certificates \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 3 · Que confíe en la CA de SecureCorp desde que nace
-#     (la misma línea que en A4 escribiste a mano en el cliente)
-RUN echo "____" >> /etc/ldap/ldap.conf
+# 3. Confiar en la CA de SecureCorp
+RUN echo "TLS_CACERT /pki/ca/ca.crt" >> /etc/ldap/ldap.conf
 
-# 4 · Qué hace al arrancar: quedarse encendida sin hacer nada
-CMD ____
+# 4. Mantener el contenedor encendido
+CMD ["sleep", "infinity"]
