@@ -40,10 +40,32 @@ En el firewall (`./lab.sh fw`): `tcpdump -ni wan host 198.51.100.62 -c 6`. Mient
 ```text
 (pega aquí la salida de tcpdump)
 ```
+B8 · Comprobación del tráfico VPN con tcpdump
+
+Captura realizada en la interfaz WAN del firewall:
+
+19:44:17.118549 IP 198.51.100.61.47494 > 198.51.100.254.51820: UDP, length 32
+19:44:17.118569 IP 198.51.100.62.53360 > 198.51.100.254.51820: UDP, length 32
+19:44:17.118704 IP 198.51.100.61.47494 > 198.51.100.254.51820: UDP, length 148
+19:44:17.118715 IP 198.51.100.62.53360 > 198.51.100.254.51820: UDP, length 148
+19:44:17.118955 IP 198.51.100.254.51820 > 198.51.100.61.47494: UDP, length 92
+19:44:17.119188 IP 198.51.100.254.51820 > 198.51.100.62.53360: UDP, length 92
+
+16 packets captured
+16 packets received by filter
+0 packets dropped by kernel
+
+Prueba de conectividad desde el comercial:
+
+root@comercial:/# curl http://172.16.10.20:8080
+
+ERP de la bodega (puerto 8080) · te llega una peticion desde 10.66.0.3
+
+
 
 En dos líneas: ¿qué se ve por la calle y qué NO se ve?
 
->
+>No se ve el contenido de las peticiones HTTP ni las IP privadas internas, porque la comunicación viaja cifrada dentro del túnel VPN WireGuard.
 
 ## Bloque C · Para la defensa (C4)
 
